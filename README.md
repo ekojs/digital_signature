@@ -159,6 +159,8 @@ openssl x509 -noout -fingerprint -md5 -in .\my_cert.crt
 ```
 
 
+#### Passphrase example key [`my_key.enc.key`](https://github.com/ekojs/digital_signature/blob/master/my_key.enc.key) in this repo is `12345`
+
 
 #### Note:
 Please feel free to add useful instruction to this repo. Silahkan bebas untuk menambahkan perintah-perintah yang berguna dalam Digital Signature pada repo ini.
