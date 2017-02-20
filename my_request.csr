@@ -1,0 +1,64 @@
+Certificate Request:
+    Data:
+        Version: 0 (0x0)
+        Subject: C=ID, ST=Indonesia, L=Jakarta Selatan, O=nama_organisasi, OU=nama_unit, CN=Eko Junaidi Salam/emailAddress=alamat_email
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:af:2b:ca:03:09:01:e0:e9:49:66:aa:50:c5:12:
+                    23:ba:9d:44:5e:a9:28:2d:05:35:0f:c9:4d:b8:22:
+                    b8:95:83:ab:56:0c:0d:1f:fe:81:2d:92:4b:6d:4f:
+                    0c:46:10:d5:84:ac:ef:e0:2c:97:ec:b0:38:8f:74:
+                    f0:a7:a2:ce:e6:df:e1:72:4e:61:2c:3d:97:e9:cf:
+                    e6:e6:d5:23:ef:2f:76:5b:0f:d5:83:6b:ad:60:96:
+                    68:63:9b:cc:31:e8:18:cd:74:e2:be:dc:c1:00:43:
+                    38:03:1a:2e:cb:f7:58:3a:f7:d7:c8:87:3f:f5:66:
+                    b1:01:30:cc:51:26:e5:75:e5:f6:52:9e:a8:8b:af:
+                    db:40:66:0c:20:6a:d2:76:f4:05:99:34:3a:aa:a6:
+                    d8:73:ae:e9:c5:ca:ba:35:0e:ae:c5:c7:d8:e8:7b:
+                    ef:53:bc:9c:cc:96:a9:2b:fa:fa:9b:99:be:85:ad:
+                    fa:d7:51:f8:0f:4d:65:56:74:c2:9a:bc:4a:a7:2e:
+                    1f:3b:5a:16:97:12:bd:4d:e8:05:c8:0e:86:cc:01:
+                    2e:27:b7:cb:39:47:88:59:2d:fc:48:4b:77:18:04:
+                    ae:4c:e0:60:97:44:5d:69:15:b4:54:4d:a0:97:61:
+                    9a:c0:85:c0:93:3f:17:11:b9:77:72:69:73:62:f4:
+                    8c:8f
+                Exponent: 65537 (0x10001)
+        Attributes:
+            challengePassword        :unable to print attribute
+    Signature Algorithm: sha256WithRSAEncryption
+         09:2a:c1:73:3c:cf:74:fc:3b:90:37:b5:75:01:8d:97:4c:3b:
+         4b:4b:d9:e7:32:62:48:b8:94:3d:bf:b2:f3:a1:05:9f:d1:1d:
+         e5:b9:96:c9:fa:e7:b1:4e:28:22:47:36:46:04:f7:1e:fd:2b:
+         1f:7f:af:8f:c0:e4:a6:b6:dd:da:64:dc:20:c2:52:35:ab:df:
+         fa:25:46:5c:60:dd:ca:7d:35:d0:2d:3f:dd:a1:00:c5:d1:9f:
+         fa:1d:2a:af:65:f2:3f:85:ff:24:d0:4b:26:16:b6:70:c6:88:
+         b4:70:d4:a5:82:c8:f1:2f:ef:c4:41:43:62:ed:0e:48:5b:4b:
+         3c:e2:9d:8a:dc:96:bf:6e:5f:50:eb:b9:ee:44:b9:79:9c:59:
+         27:7f:6f:a1:cb:ea:60:bd:95:4b:4c:51:93:f6:ff:77:17:6f:
+         6e:1d:e8:49:fb:2b:f8:e3:a9:8b:7f:79:2f:d6:61:72:f5:09:
+         ff:79:3d:9c:ae:f9:0f:80:11:3d:b9:de:04:51:52:23:07:6a:
+         34:de:7f:fd:06:55:d5:69:4a:72:d0:7a:8f:92:00:62:d8:9e:
+         a9:d6:57:78:4c:bf:a4:3c:23:06:a8:6c:61:00:fc:eb:29:e3:
+         12:52:96:7e:1a:e2:01:31:e7:91:74:22:9d:b6:7c:17:7d:f3:
+         01:9a:1e:42
+-----BEGIN CERTIFICATE REQUEST-----
+MIIC/jCCAeYCAQAwgaIxCzAJBgNVBAYTAklEMRIwEAYDVQQIDAlJbmRvbmVzaWEx
+GDAWBgNVBAcMD0pha2FydGEgU2VsYXRhbjEYMBYGA1UECgwPbmFtYV9vcmdhbmlz
+YXNpMRIwEAYDVQQLDAluYW1hX3VuaXQxGjAYBgNVBAMMEUVrbyBKdW5haWRpIFNh
+bGFtMRswGQYJKoZIhvcNAQkBFgxhbGFtYXRfZW1haWwwggEiMA0GCSqGSIb3DQEB
+AQUAA4IBDwAwggEKAoIBAQCvK8oDCQHg6UlmqlDFEiO6nUReqSgtBTUPyU24IriV
+g6tWDA0f/oEtkkttTwxGENWErO/gLJfssDiPdPCnos7m3+FyTmEsPZfpz+bm1SPv
+L3ZbD9WDa61glmhjm8wx6BjNdOK+3MEAQzgDGi7L91g699fIhz/1ZrEBMMxRJuV1
+5fZSnqiLr9tAZgwgatJ29AWZNDqqpthzrunFyro1Dq7Fx9joe+9TvJzMlqkr+vqb
+mb6FrfrXUfgPTWVWdMKavEqnLh87WhaXEr1N6AXIDobMAS4nt8s5R4hZLfxIS3cY
+BK5M4GCXRF1pFbRUTaCXYZrAhcCTPxcRuXdyaXNi9IyPAgMBAAGgFjAUBgkqhkiG
+9w0BCQcxBwwFZXh0cmEwDQYJKoZIhvcNAQELBQADggEBAAkqwXM8z3T8O5A3tXUB
+jZdMO0tL2ecyYki4lD2/svOhBZ/RHeW5lsn657FOKCJHNkYE9x79Kx9/r4/A5Ka2
+3dpk3CDCUjWr3/olRlxg3cp9NdAtP92hAMXRn/odKq9l8j+F/yTQSyYWtnDGiLRw
+1KWCyPEv78RBQ2LtDkhbSzzinYrclr9uX1Drue5EuXmcWSd/b6HL6mC9lUtMUZP2
+/3cXb24d6En7K/jjqYt/eS/WYXL1Cf95PZyu+Q+AET253gRRUiMHajTef/0GVdVp
+SnLQeo+SAGLYnqnWV3hMv6Q8IwaobGEA/Osp4xJSln4a4gEx55F0Ip22fBd98wGa
+HkI=
+-----END CERTIFICATE REQUEST-----
