@@ -5,22 +5,22 @@
 
 ## Generate RSA Key
 
-1. Generate 2048bit RSA Key
+* Generate 2048bit RSA Key
 ```bash
 openssl genrsa -aes256 -out my_key.enc.key 2048
 ```
 
-2. Generate CSR from RSA Key
+* Generate CSR from RSA Key
 ```bash
 openssl req -new -days 730 -key my_key.enc.key -text -out my_request.csr
 ```
 
-3. Generate X509 default PEM Format
+* Generate X509 default PEM Format
 ```bash
 openssl x509 -req -days 730 -in my_request.csr -signkey my_key.enc.key -out my_cert.crt
 ```
 
-4. Generate SSH Public Key from RSA Key
+* Generate SSH Public Key from RSA Key
 ```bash
 ssh-keygen -y -f my_key.enc.key > my_ssh.pub
 ```
@@ -28,42 +28,42 @@ ssh-keygen -y -f my_key.enc.key > my_ssh.pub
 
 ## My Certificate X509
 
-1. Generate CSR from Certificate
+* Generate CSR from Certificate
 ```bash
 openssl x509 -x509toreq -in .\my_cert.crt -signkey .\my_key.enc.key -out .\my_request.csr
 ```
 
-2. Renew expired certificate
+* Renew expired certificate
 ```bash
 openssl x509 -req -days 365 -in .\my_request.csr -signkey .\my_key.enc.key -out .\my_cert_renew.crt
 ```
 
-3. Get unencrypted key from encrypted private key
+* Get unencrypted key from encrypted private key
 ```bash
 openssl rsa -in .\my_key.enc.key -out hasil.key
 ```
 
-4. Generate PKCS12 from Certificate
+* Generate PKCS12 from Certificate
 ```bash
 openssl pkcs12 -export -in .\my_cert_renew.crt -inkey .\my_key.enc.key -out .\my_cert_renew.p12
 ```
 
-5. Extract Private Key (PEM) from PKCS12
+* Extract Private Key (PEM) from PKCS12
 ```bash
 openssl pkcs12 -in .\my_cert_renew.p12 -nocerts -out .\my_cert.pem
 ```
 
-6. Extract Private Key from PEM file using DES3 encrypted
+* Extract Private Key from PEM file using DES3 encrypted
 ```bash
 openssl rsa -in .\my_cert.pem -des3 -out .\my_key.enc.key
 ```
 
-7. Extract Client Certificate from PKCS12
+* Extract Client Certificate from PKCS12
 ```bash
 openssl pkcs12 -in .\my_cert_renew.p12 -nokeys -clcerts -out .\my_cert.crt
 ```
 
-8. Extract CA Certificate from PKCS12
+* Extract CA Certificate from PKCS12
 ```bash
 openssl pkcs12 -in .\my_cert_renew.p12 -nokeys -cacerts -out .\my_cert.crt
 ```
@@ -80,17 +80,22 @@ Compression: Uncompressed, ZIP, ZLIB, BZIP2
 Read : https://futureboy.us/pgp.html
 ```
 
-1. Change key
+* Generate GPG Public & Private Key
+```bash
+gpg -i --gen-key
+```
+
+* Change key
 ```bash
 gpg -i -edit-key user_id
 ```
 
-2. Change cipher algorithms
+* Change cipher algorithms
 ```bash
 gpg --cipher-algo name -ca your_file
 ```
 
-3. Using Stronger Algorithms
+* Using Stronger Algorithms
 ```bash
 gpg -i --edit-key user_id 
 help
@@ -99,40 +104,67 @@ setpref AES256 CAMELLIA256 AES192 CAMELLIA192 AES CAMELLIA128 TWOFISH CAST5 3DES
 save
 ```
 
-4. Backup Secret Key
+* Backup Secret Key and Subkey
 ```bash
 gpg --export-secret-key -a -o key.asc
+gpg --export-secret-subkeys -a -o subkey.asc
 ```
 
-5. Backup Public Key
+* Backup Public Key
 ```bash
 gpg -o pub.gpg -a --export eko_junaidisalam@live.com
 ```
 
-6. Encrypt using symmetric cipher
+* Encrypt using symmetric cipher
 ```bash
 gpg --cipher-algo aes256 -ca filename
 ```
 
-7. Decrypt a file
+* Decrypt a file
 ```bash
 gpg filename
 ```
 
-8. Sign and armored a file
+* Sign and armored a file
 ```bash
 gpg -o hasil.asc -sa filename
 ```
 
+* Create revocation certificate
+```bash
+gpg -o my_revocation_cert --gen-revoke key_id
+```
+
+* Separate Master Keypair to Laptop Keypair
+```bash
+mkdir /tmp/gpg
+sudo mount -t tmpfs -o size=1M tmpfs /tmp/gpg
+gpg --export-secret-subkeys key_id > /tmp/gpg/subkeys
+gpg --delete-secret-key key_id
+gpg --import /tmp/gpg/subkeys
+sudo umount /tmp/gpg
+rm -rf /tmp/gpg
+
+gpg -K
+
+# You should see like this 'sec#  2048R/C774674E 2016-03-10' not 'sec  2048R/C774674E 2016-03-10', it means you're successfully separate subkey from the keypair located in your keyring.
+```
+
+* Show photo in gpg
+```bash
+# You must set photo-viewer "eog %i" in your gpg.conf file
+
+gpg --list-options show-photos --fingerprint ekojs
+```
 
 
 ## My Certificate OpenSSH
-1. Create SSH Public Key from OpenSSL Key
+* Create SSH Public Key from OpenSSL Key
 ```bash
 ssh-keygen -y -f my_key.enc.key > my-ssh.pub
 ```
 
-2. Show Fingerprint of SSH Public Key
+* Show Fingerprint of SSH Public Key
 ```bash
 ssh-keygen -lv -E md5 -f my_ssh.pub
 ```
@@ -140,23 +172,32 @@ ssh-keygen -lv -E md5 -f my_ssh.pub
 
 
 ## Check corresponding RSA Private Key & Public Key
-1. For RSA & X509
+* For RSA & X509
 ```bash
 openssl rsa -in .\my_key.enc.key -modulus -noout | openssl md5
 openssl x509 -in .\my_cert.crt -modulus -noout | openssl md5
 ```
 
-2. For RSA & SSH Pub Key
+* For RSA & SSH Pub Key
 ```bash
 ssh-keygen -y -f my_key.enc.key
 cat my_ssh.pub
 ```
 
-3. Check pub fingerprint
+* Check pub fingerprint
 ```bash
 ssh-keygen -lv -E md5 -f my_ssh.pub
 openssl x509 -noout -fingerprint -md5 -in .\my_cert.crt
 ```
+
+
+## Create Perfect Keypair in OpenPGP
+* Generate key RSA-RSA 4096 bits keysize
+* Add photo to the key
+* Add subkey to complete flag i.e : SC, S, E
+* Use Stronger Algorithms
+* Creating Revocation Certificate if your master keypair gets lost or stolen. This file is only way to tell everyone to ignore the stolen key.
+* Separate Master keypair to laptop keypair
 
 
 #### Passphrase example key [`my_key.enc.key`](https://github.com/ekojs/digital_signature/blob/master/my_key.enc.key) in this repo is `12345`
