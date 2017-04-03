@@ -68,6 +68,21 @@ openssl pkcs12 -in .\my_cert_renew.p12 -nokeys -clcerts -out .\my_cert.crt
 openssl pkcs12 -in .\my_cert_renew.p12 -nokeys -cacerts -out .\my_cert.crt
 ```
 
+* Create Public Key from RSA Private Key
+```bash
+openssl rsa -in .\my_key.enc.key -pubout -out my_key.pub
+```
+
+* Sign a digest with RSA Private Key
+```bash
+openssl dgst -sha256 -sign .\my_key.enc.key -out .\README.md.sig .\README.md
+```
+
+* Verify a Signed Digest using Public Key
+```bash
+openssl dgst -sha256 -verify .\my_key.pub -signature .\README.md.sig .\README.md
+```
+
 
 ## My Certificate gpg (GnuPG) 1.4.20
 ```bash
@@ -128,6 +143,11 @@ gpg filename
 * Sign and armored a file
 ```bash
 gpg -o hasil.asc -sa filename
+```
+
+* Verify a signed armored file
+```bash
+gpg --verify hasil.asc
 ```
 
 * Create revocation certificate
