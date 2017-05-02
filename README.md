@@ -210,6 +210,12 @@ ssh-keygen -lv -E md5 -f my_ssh.pub
 openssl x509 -noout -fingerprint -md5 -in .\my_cert.crt
 ```
 
+* For Pub & priv Key OpenPGP, you can check it in `keyid` values.
+```bash
+gpg --list-packets pub_key.asc | head
+gpg --list-packets priv_key.asc | head
+```
+
 
 ## Create Perfect Keypair in OpenPGP
 * Generate key RSA-RSA 4096 bits keysize
