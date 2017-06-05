@@ -26,6 +26,18 @@ ssh-keygen -y -f my_key.enc.key > my_ssh.pub
 ```
 
 
+## My Certificate OpenSSH
+* Create SSH Public Key from OpenSSL Key
+```bash
+ssh-keygen -y -f my_key.enc.key > my-ssh.pub
+```
+
+* Show Fingerprint of SSH Public Key
+```bash
+ssh-keygen -lv -E md5 -f my_ssh.pub
+```
+
+
 ## My Certificate X509
 
 * Generate CSR from Certificate
@@ -178,19 +190,6 @@ gpg --list-options show-photos --fingerprint ekojs
 ```
 
 
-## My Certificate OpenSSH
-* Create SSH Public Key from OpenSSL Key
-```bash
-ssh-keygen -y -f my_key.enc.key > my-ssh.pub
-```
-
-* Show Fingerprint of SSH Public Key
-```bash
-ssh-keygen -lv -E md5 -f my_ssh.pub
-```
-
-
-
 ## Check corresponding RSA Private Key & Public Key
 * For RSA & X509
 ```bash
@@ -226,7 +225,8 @@ gpg --list-packets priv_key.asc | head
 * Separate Master keypair to laptop keypair
 
 
-#### Passphrase example key [`my_key.enc.key`](https://github.com/ekojs/digital_signature/blob/master/my_key.enc.key) in this repo is `12345`
+#### Passphrase for RSA example key [`my_key.enc.key`](https://github.com/ekojs/digital_signature/blob/master/X509/my_key.enc.key) in this repo is `12345`
+#### Passphrase for OpenPGP example key [`my_secret_key.asc`](https://github.com/ekojs/digital_signature/blob/master/OpenPGP/my_secret_key.asc) in this repo is `12345`
 
 
 #### Note:
