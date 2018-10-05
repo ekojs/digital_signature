@@ -15,6 +15,11 @@ openssl genrsa -aes256 -out my_key.enc.key 2048
 openssl req -new -days 730 -key my_key.enc.key -text -out my_request.csr
 ```
 
+* Check CSR content from CSR file
+```bash
+openssl req -in my_request.csr -noout -text
+```
+
 * Generate X509 default PEM Format
 ```bash
 openssl x509 -req -days 730 -in my_request.csr -signkey my_key.enc.key -out my_cert.crt
