@@ -220,6 +220,26 @@ gpg --list-packets pub_key.asc | head
 gpg --list-packets priv_key.asc | head
 ```
 
+## Check IMAP via SSL uses port 993
+```
+openssl s_client -showcerts -connect mail.example.com:993
+```
+
+## Check POP3 via SSL uses port 995
+```
+openssl s_client -showcerts -connect mail.example.com:995
+```
+
+## Check SMTP via SSL uses port 465
+```
+openssl s_client -showcerts -connect mail.example.com:465
+```
+
+## Check SMTP via TLS/StartTLS uses port 587
+```
+openssl s_client -starttls smtp -showcerts -connect mail.example.com:587
+```
+
 
 ## Create Perfect Keypair in OpenPGP
 * Generate key RSA-RSA 4096 bits keysize
