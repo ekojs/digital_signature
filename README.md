@@ -10,6 +10,11 @@
 openssl genrsa -aes256 -out my_key.enc.key 2048
 ```
 
+* Generate Public Key from RSA Key
+```bash
+openssl rsa -in my_key.enc.key -pubout -outform pem -out my.pub.pem
+```
+
 * Generate CSR from RSA Key
 ```bash
 openssl req -new -days 730 -key my_key.enc.key -text -out my_request.csr
@@ -28,6 +33,28 @@ openssl x509 -req -days 730 -in my_request.csr -signkey my_key.enc.key -out my_c
 * Generate SSH Public Key from RSA Key
 ```bash
 ssh-keygen -y -f my_key.enc.key > my_ssh.pub
+```
+
+* Generate random key for encryption using aes-256-cbc
+```bash
+openssl rand -base64 32 -out key.b64
+```
+
+* Encrypt the key using public key recipient
+```bash
+openssl rsautl -encrypt -inkey my.pub.pem -pubin -in key.b64 -out key.b64.enc
+```
+
+* Encrypt the file using our key
+```bash
+openssl enc -aes-256-cbc -salt -in SECRET_FILE -out SECRET_FILE.enc -pass file:./key.b64
+```
+
+* Send and Decrypt The encrypted key.b64.enc using private key recipient and your SECRET_FILE.enc using the decrypted key
+```bash
+openssl rsautl -decrypt -inkey my_key.enc.key -in key.b64.enc -out key.b64
+
+openssl enc -d -aes-256-cbc -in SECRET_FILE.enc -out SECRET_FILE -pass file:./key.b64
 ```
 
 
