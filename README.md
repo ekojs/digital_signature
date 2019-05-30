@@ -58,6 +58,24 @@ openssl enc -d -aes-256-cbc -in SECRET_FILE.enc -out SECRET_FILE -pass file:./ke
 ```
 
 
+## Generate ECDSA Key
+
+* Generate Encrypted EC key
+```bash
+openssl ecparam -genkey -name secp256k1 | openssl ec -aes256 -out my_ec.enc.key
+```
+
+* Generate Public Key from EC Key
+```bash
+openssl ec -in my_ec.enc.key -pubout -out my_ecpub.pem
+```
+
+* Generate CSR from EC Key
+```bash
+openssl req -new -sha256 -key my_ec.enc.key -days 730 -text -out my_ec.csr
+```
+
+
 ## My Certificate OpenSSH
 * Create SSH Public Key from OpenSSL Key
 ```bash
@@ -90,7 +108,7 @@ openssl rsa -in .\my_key.enc.key -out hasil.key
 * Generate PKCS12 from Certificate
 ```bash
 openssl pkcs12 -export -in .\my_cert_renew.crt -inkey .\my_key.enc.key -out .\my_cert_renew.p12
-```
+ ```
 
 * Extract Private Key (PEM) from PKCS12
 ```bash
