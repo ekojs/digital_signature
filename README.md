@@ -300,8 +300,7 @@ openssl s_client -starttls smtp -showcerts -connect mail.example.com:587
 * Separate Master keypair to laptop keypair
 
 
-#### Passphrase for RSA example key [`my_key.enc.key`](https://github.com/ekojs/digital_signature/blob/master/X509/my_key.enc.key) in this repo is `12345`
-#### Passphrase for OpenPGP example key [`my_secret_key.asc`](https://github.com/ekojs/digital_signature/blob/master/OpenPGP/my_secret_key.asc) in this repo is `12345`
+#### Passphrase for all key is `12345`
 
 
 #### Note:
