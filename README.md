@@ -30,6 +30,11 @@ openssl req -in my_request.csr -noout -text
 openssl x509 -req -days 730 -in my_request.csr -signkey my_key.enc.key -out my_cert.crt
 ```
 
+* Extract Public Key from X509 Certificate
+```bash
+openssl x509 -pubkey -noout -in my_cert.crt > my_pub.pem
+```
+
 * Generate SSH Public Key from RSA Key
 ```bash
 ssh-keygen -y -f my_key.enc.key > my_ssh.pub
