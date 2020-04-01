@@ -3,6 +3,33 @@
 #### Author: Eko Junaidi Salam
 
 
+## Generate CA Root Key
+
+* Generate 4096bit RSA Key for Root CA
+```bash
+openssl genrsa -aes256 -out my_ca.enc.key 4096
+```
+
+* Create and self-sign Root CA Certificate
+```bash
+openssl req -x509 -new -nodes -key my_ca.enc.key -sha256 -days 1024 -out myCA.crt
+```
+
+* Generate Certificate for client CSR using Root CA
+```bash
+openssl x509 -req -in my_request.csr -CA myCA.crt -CAkey my_ca.enc.key -CAcreateserial -out my_request.crt -days 730 -sha256
+```
+
+* Generate PKCS12 with chain
+```bash
+openssl pkcs12 -export -in my_request.crt -inkey my_key.enc.key -name "Eko Junaidi Salam" -chain -CAfile myCA.crt -out my_req_with_chain.pfx
+```
+
+* Generate PKCS12 with no chain
+```bash
+openssl pkcs12 -export -in my_request.crt -inkey my_key.enc.key -name "Eko Junaidi Salam" -certfile myCA.crt -out my_req_with_chain.pfx
+```
+
 ## Generate RSA Key
 
 * Generate 2048bit RSA Key
