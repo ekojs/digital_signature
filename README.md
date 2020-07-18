@@ -30,6 +30,11 @@ openssl pkcs12 -export -in my_request.crt -inkey my_key.enc.key -name "Eko Junai
 openssl pkcs12 -export -in my_request.crt -inkey my_key.enc.key -name "Eko Junaidi Salam" -certfile myCA.crt -out my_req_with_chain.pfx
 ```
 
+* Generate Key and self-sign Certificate
+```bash
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout my.key -out my.crt
+```
+
 ## Generate RSA Key
 
 * Generate 2048bit RSA Key
