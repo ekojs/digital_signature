@@ -95,6 +95,36 @@ openssl enc -d -aes-256-cbc -in SECRET_FILE.enc -out SECRET_FILE -pass file:./ke
 ```
 
 
+## Using Free Time Stamp Authority
+### Source from [Free TSA](https://freetsa.org/)
+
+* Download CA and tsa cert
+```bash
+wget https://freetsa.org/files/tsa.crt
+wget https://freetsa.org/files/cacert.pem
+```
+
+* Create a tsq (TimeStampRequest) file, which contains a hash of the file you want to sign.
+```bash
+openssl ts -query -data signed.pdf -no_nonce -sha512 -cert -out signed.tsq
+```
+
+* Send the TimeStampRequest to freeTSA.org and receive a tsr (TimeStampResponse) file. 
+```bash
+curl -H "Content-Type: application/timestamp-query" --data-binary '@signed.tsq' https://freetsa.org/tsr > signed.tsr
+```
+
+* With the public Certificates you can verify the TimeStampRequest. 
+```bash
+openssl ts -verify -in signed.tsr -queryfile signed.tsq -CAfile cacert.pem -untrusted tsa.crt
+```
+
+* URL Screenshooter from TSA
+```bash
+curl --data "screenshot=https://www.fsf.org/&delay=n" https://freetsa.org/screenshot.php > screenshot.pdf
+```
+
+
 ## Generate ECDSA Key
 
 * Generate Encrypted EC key
