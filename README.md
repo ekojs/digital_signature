@@ -96,7 +96,7 @@ openssl enc -d -aes-256-cbc -in SECRET_FILE.enc -out SECRET_FILE -pass file:./ke
 
 
 ## Using Free Time Stamp Authority
-### Source from [Free TSA](https://freetsa.org/)
+#### Source from [Free TSA](https://freetsa.org/)
 
 * Download CA and tsa cert
 ```bash
@@ -350,6 +350,13 @@ openssl s_client -showcerts -connect mail.example.com:465
 ## Check SMTP via TLS/StartTLS uses port 587
 ```
 openssl s_client -starttls smtp -showcerts -connect mail.example.com:587
+```
+
+## Create certificate using lets encrypt
+#### some reading : [Generate wildcard ssl using lets encrypt](https://medium.com/@saurabh6790/generate-wildcard-ssl-certificate-using-lets-encrypt-certbot-273e432794d7)
+```bash
+apt install letsencrypt
+certbot certonly --manual --preferred-challenges=dns --email your-email@gmail.com --server https://acme-v02.api.letsencrypt.org/directory --agree-tos -d *.example.com
 ```
 
 
