@@ -10,9 +10,24 @@
 openssl genrsa -aes256 -out my_ca.enc.key 4096
 ```
 
-* Create and self-sign Root CA Certificate
+* Generate RSA Key and CSR for CA
+```bash
+openssl req -new -newkey rsa:4096 -keyout cakey.pem -out careq.pem -config openssl.cnf
+```
+
+* Create and self-sign Root CA Certificate from RSA Key
 ```bash
 openssl req -x509 -new -nodes -key my_ca.enc.key -sha256 -days 1024 -out myCA.crt
+```
+
+* Create and self-sign V3 Root CA from CSR file
+```bash
+openssl ca -out cacert.pem -days 2652 -keyfile cakey.pem -selfsign -config openssl.cnf -extensions v3_ca -in careq.pem
+```
+
+* Create and Sign end client CSR using Root CA from CSR file
+```bash
+openssl ca -in serverreq.pem -days 1200 -cert cacert.pem -keyfile cakey.pem -out servercrt.pem -extensions usr_cert -config openssl.cnf
 ```
 
 * Generate Certificate for client CSR using Root CA
@@ -33,6 +48,31 @@ openssl pkcs12 -export -in my_request.crt -inkey my_key.enc.key -name "Eko Junai
 * Generate Key and self-sign Certificate
 ```bash
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout my.key -out my.crt
+```
+
+* Verify end point certificate with CA
+```bash
+openssl verify -CAfile cacert.pem servercrt.pem
+```
+
+* Revoke Certificate
+```bash
+openssl ca -revoke tescert.crt -config openssl.cnf
+```
+
+* Generate Certificate Revocation List (CRL)
+```bash
+openssl ca -gencrl -config openssl.cnf -out crl.pem
+```
+
+* Verify certificate based on CA and CRL
+```bash
+openssl verify -crl_check -CAfile cacert.pem -CRLfile crl.pem servercrt.pem
+```
+
+* Verify ocsp validation
+```bash
+openssl ocsp -CAfile cacert.pem -issuer issuer.pem -cert yourcert.crt -url http://ocsp.example.com/ -resp_text -noverify
 ```
 
 ## Generate RSA Key
@@ -93,7 +133,6 @@ openssl rsautl -decrypt -inkey my_key.enc.key -in key.b64.enc -out key.b64
 
 openssl enc -d -aes-256-cbc -in SECRET_FILE.enc -out SECRET_FILE -pass file:./key.b64
 ```
-
 
 ## Using Free Time Stamp Authority
 #### Source from [Free TSA](https://freetsa.org/)
@@ -359,6 +398,22 @@ apt install letsencrypt
 certbot certonly --manual --preferred-challenges=dns --email your-email@gmail.com --server https://acme-v02.api.letsencrypt.org/directory --agree-tos -d *.example.com
 ```
 
+
+## Generate Certificate using Keytool from Java
+* Create self-sign Certificate
+```bash
+keytool -genkeypair -storepass 123456 -storetype pkcs12 -alias test -validity 365 -v -keyalg RSA -keysize 2048 -keystore keystore.p12 
+```
+
+* Check detail keystore content
+```bash
+keytool -keystore keystore.p12 -list -v
+```
+
+* Import another PKCS12 to keystore
+```bash
+keytool -importkeystore -srcstoretype pkcs12 -srckeystore cert.p12 -destkeystore keystore.p12 -srcalias 1 -destalias youralias
+```
 
 ## Create Perfect Keypair in OpenPGP
 * Generate key RSA-RSA 4096 bits keysize
