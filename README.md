@@ -102,6 +102,11 @@ openssl req -in my_request.csr -noout -text
 openssl x509 -req -days 730 -in my_request.csr -signkey my_key.enc.key -out my_cert.crt
 ```
 
+* Generate X509 default PEM Format using V3 Extension and SHA256 Digest
+```bash
+openssl x509 -req -days 730 -in my_request.csr -signkey my_key.enc.key -out my_cert.crt -sha256 -extfile v3.ext
+```
+
 * Extract Public Key from X509 Certificate
 ```bash
 openssl x509 -pubkey -noout -in my_cert.crt > my_pub.pem
