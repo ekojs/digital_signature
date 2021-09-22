@@ -350,6 +350,11 @@ gpg -K
 gpg --list-options show-photos --fingerprint ekojs
 ```
 
+* Sign someone key
+```bash
+gpg -u yourkey --sign-key --ask-cert-level someone@email.com
+```
+
 
 ## Check corresponding RSA Private Key & Public Key
 * For RSA & X509
