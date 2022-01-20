@@ -401,6 +401,30 @@ openssl s_client -showcerts -connect mail.example.com:465
 openssl s_client -starttls smtp -showcerts -connect mail.example.com:587
 ```
 
+## Configure OCSP Stapling
+#### some reading : [Configure OCSP Stapling](https://www.digitalocean.com/community/tutorials/how-to-configure-ocsp-stapling-on-apache-and-nginx)
+* Retrieve CA Bundle
+```bash
+wget -O - https://www.digicert.com/CACerts/DigiCertHighAssuranceEVRootCA.crt | openssl x509 -inform DER -outform PEM | tee -a ca-certs.pem> /dev/null
+wget -O - https://www.digicert.com/CACerts/DigiCertHighAssuranceEVCA-1.crt | openssl x509 -inform DER -outform PEM | tee -a ca-certs.pem> /dev/null
+```
+* Config OCSP
+```bash
+# Outside vhost
+SSLStaplingCache shmcb:/tmp/stapling_cache(128000)
+
+# Inside vhost
+SSLCACertificateFile /etc/ssl/ca-certs.pem
+SSLUseStapling on
+
+# Check
+apachectl configtest
+```
+* Testing OCSP Stapling
+```
+echo QUIT | openssl s_client -connect ocsp.digicert.com:443 -status 2> /dev/null | grep -A 17 'OCSP response:' | grep -B 17 'Next Update'
+```
+
 ## Create certificate using lets encrypt
 #### some reading : [Generate wildcard ssl using lets encrypt](https://medium.com/@saurabh6790/generate-wildcard-ssl-certificate-using-lets-encrypt-certbot-273e432794d7)
 ```bash
