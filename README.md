@@ -186,6 +186,21 @@ openssl ec -in my_ec.enc.key -pubout -out my_ecpub.pem
 openssl req -new -sha256 -key my_ec.enc.key -days 730 -text -out my_ec.csr
 ```
 
+* Generate derive key as shared secret from recipient EC Public Key
+```bash
+openssl pkeyutl -derive -inkey my_ec.enc.key -peerkey bob_ecpub.pem | openssl dgst -sha256 -r | sed 's/ \*stdin//g' > pass.hash
+```
+
+* Encrypt data using shared secret from derive key
+```bash
+openssl enc -aes256 -base64 -k pass.hash -e -in hello.txt -out hello.txt.enc
+```
+
+* Decrypt data using shared secret from derive key
+```bash
+openssl enc -aes256 -base64 -k pass.hash -d -in hello.txt.enc -out hello.txt
+```
+
 
 ## My Certificate OpenSSH
 * Create SSH Public Key from OpenSSL Key
