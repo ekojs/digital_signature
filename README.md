@@ -291,6 +291,18 @@ openssl pkeyutl -decrypt -inkey me.key -pkeyopt rsa_padding_mode:oaep -pkeyopt r
 
 * Encrypt/Decrypt data using X509 with RSA-OAEP and piv pkcs11
 ```bash
+# Compile libp11 library to get pkcs11.dll/so file from this github link
+# https://github.com/OpenSC/libp11.git
+
+# Set the OPENSSL_CONF to engine.cnf
+# https://raw.githubusercontent.com/ekojs/digital_signature/master/engine.cnf
+
+# Check pkcs11 engine in openssl
+openssl engine pkcs11 -c
+# Your output if it's available :
+# (pkcs11) pkcs11 engine
+#  [RSA, rsaEncryption, id-ecPublicKey]
+
 # Encrypt
 openssl pkeyutl -encrypt -engine pkcs11 -keyform engine -inkey 3 -passin file:pin.piv -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 -pkeyopt rsa_mgf1_md:sha256 -in msg.txt -out msg.enc
 # Decrypt
