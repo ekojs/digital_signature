@@ -271,6 +271,32 @@ openssl dgst -sha256 -sign .\my_key.enc.key -out .\README.md.sig .\README.md
 openssl dgst -sha256 -verify .\my_key.pub -signature .\README.md.sig .\README.md
 ```
 
+* Sign/Verify data using X509 with RSA-PSS mode
+```bash
+# Create digest from the message
+openssl dgst -sha256 -binary -out msg.bin msg.txt
+# Create signed message using private key
+openssl pkeyutl -sign -inkey me.key -pkeyopt digest:sha256 -pkeyopt rsa_padding_mode:pss -pkeyopt rsa_mgf1_md:sha256 -pkeyopt rsa_pss_saltlen:digest -out msg.sig -in msg.bin
+# Verified signed message using X509 Certificate
+openssl pkeyutl -verify -inkey me.crt -certin -pkeyopt digest:sha256 -pkeyopt rsa_padding_mode:pss -pkeyopt rsa_mgf1_md:sha256 -sigfile msg.sig -in msg.bin
+```
+
+* Encrypt/Decrypt data using X509 with RSA-OAEP
+```bash
+# Encrypt using X509
+openssl pkeyutl -encrypt -inkey me.crt -certin -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 -pkeyopt rsa_mgf1_md:sha256 -out msg.enc -in msg.txt
+# Decrypt using Private Key
+openssl pkeyutl -decrypt -inkey me.key -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 -pkeyopt rsa_mgf1_md:sha256 -out msg.dec -in msg.enc
+```
+
+* Encrypt/Decrypt data using X509 with RSA-OAEP and piv pkcs11
+```bash
+# Encrypt
+openssl pkeyutl -encrypt -engine pkcs11 -keyform engine -inkey 3 -passin file:pin.piv -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 -pkeyopt rsa_mgf1_md:sha256 -in msg.txt -out msg.enc
+# Decrypt
+openssl pkeyutl -decrypt -engine pkcs11 -keyform engine -inkey 3 -passin file:pin.piv -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 -pkeyopt rsa_mgf1_md:sha256 -in msg.enc -out msg.dec
+```
+
 
 ## My Certificate gpg (GnuPG) 1.4.20
 ```bash
