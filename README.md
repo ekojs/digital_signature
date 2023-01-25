@@ -309,6 +309,19 @@ openssl pkeyutl -encrypt -engine pkcs11 -keyform engine -inkey 3 -passin file:pi
 openssl pkeyutl -decrypt -engine pkcs11 -keyform engine -inkey 3 -passin file:pin.piv -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 -pkeyopt rsa_mgf1_md:sha256 -in msg.enc -out msg.dec
 ```
 
+* AES-KWP as RFC 5649 compliant Using patched openssl-1.1.0l or openssl-3.0.x latest release
+```bash
+# The -id-aes256-wrap-pad cipher is the RFC 3394 compliant wrapping mechanism that coincides with CKM_RSA_AES_KEY_WRAP. The -iv values are set by RFC 5649 (an extension to RFC 3394)
+# see rfc 5649 https://tools.ietf.org/html/rfc5649
+openssl rand -out rand.bin 32
+openssl enc -id-aes256-wrap-pad -iv A65959A6 -K $(hexdump -v -e '/1 "%02x"' < rand.bin) -in my.p8 -out wrap.bin
+```
+
+* Unwrap data using AES-KWP RFC 5649
+```bash
+openssl enc -d -id-aes256-wrap-pad -iv A65959A6 -K $(hexdump -v -e '/1 "%02x"' < rand.bin) -in wrap.bin -out my.p8.der
+```
+
 
 ## My Certificate gpg (GnuPG) 1.4.20
 ```bash
