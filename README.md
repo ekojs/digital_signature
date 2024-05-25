@@ -139,35 +139,6 @@ openssl rsautl -decrypt -inkey my_key.enc.key -in key.b64.enc -out key.b64
 openssl enc -d -aes-256-cbc -in SECRET_FILE.enc -out SECRET_FILE -pass file:./key.b64
 ```
 
-## Using Free Time Stamp Authority
-#### Source from [Free TSA](https://freetsa.org/)
-
-* Download CA and tsa cert
-```bash
-wget https://freetsa.org/files/tsa.crt
-wget https://freetsa.org/files/cacert.pem
-```
-
-* Create a tsq (TimeStampRequest) file, which contains a hash of the file you want to sign.
-```bash
-openssl ts -query -data signed.pdf -no_nonce -sha512 -cert -out signed.tsq
-```
-
-* Send the TimeStampRequest to freeTSA.org and receive a tsr (TimeStampResponse) file. 
-```bash
-curl -H "Content-Type: application/timestamp-query" --data-binary '@signed.tsq' https://freetsa.org/tsr > signed.tsr
-```
-
-* With the public Certificates you can verify the TimeStampRequest. 
-```bash
-openssl ts -verify -in signed.tsr -queryfile signed.tsq -CAfile cacert.pem -untrusted tsa.crt
-```
-
-* URL Screenshooter from TSA
-```bash
-curl --data "screenshot=https://www.fsf.org/&delay=n" https://freetsa.org/screenshot.php > screenshot.pdf
-```
-
 
 ## Generate ECDSA Key
 
@@ -199,6 +170,47 @@ openssl enc -aes256 -base64 -k pass.hash -e -in hello.txt -out hello.txt.enc
 * Decrypt data using shared secret from derive key
 ```bash
 openssl enc -aes256 -base64 -k pass.hash -d -in hello.txt.enc -out hello.txt
+```
+
+
+## Asymmetric Key Operation in Kernel Keyring
+```bash
+dnf install -y keyutils
+modprobe pkcs8_key_parser
+```
+
+* Create keyring in user space and generate key
+```bash
+keyctl newring myring @u
+openssl genrsa -out my.key 4096
+openssl rsa -in my.key -pubout -out my.pub
+openssl pkcs8 -outform der -topk8 -in my.key -out my.p8 -nocrypt
+```
+
+* Add Private Key type asymmetric using pkcs8 unencrypted format
+```bash
+cat my.p8 | keyctl padd asymmetric mykey %keyring:myring
+```
+
+* Encrypt data using enc pkcs1
+```bash
+keyctl pkey_encrypt %asymmetric:mykey 0 hello.txt enc=pkcs1 hash=sha256 > hello.enc
+```
+
+* Decrypt data using enc pkcs1
+```bash
+keyctl pkey_decrypt %asymmetric:mykey 0 hello.enc enc=pkcs1
+```
+
+* Signing data
+```bash
+cat hello.txt | openssl sha256 -binary -out hello.hash
+keyctl pkey_sign %asymmetric:mykey 0 hello.hash enc=pkcs1 hash=sha256 > hello.sig
+```
+
+* Verify data
+```bash
+cat hello.txt | openssl sha256 -verify my.pub -signature hello.sig
 ```
 
 
@@ -514,6 +526,37 @@ keytool -keystore keystore.p12 -list -v
 ```bash
 keytool -importkeystore -srcstoretype pkcs12 -srckeystore cert.p12 -destkeystore keystore.p12 -srcalias 1 -destalias youralias
 ```
+
+
+## Using Free Time Stamp Authority
+#### Source from [Free TSA](https://freetsa.org/)
+
+* Download CA and tsa cert
+```bash
+wget https://freetsa.org/files/tsa.crt
+wget https://freetsa.org/files/cacert.pem
+```
+
+* Create a tsq (TimeStampRequest) file, which contains a hash of the file you want to sign.
+```bash
+openssl ts -query -data signed.pdf -no_nonce -sha512 -cert -out signed.tsq
+```
+
+* Send the TimeStampRequest to freeTSA.org and receive a tsr (TimeStampResponse) file. 
+```bash
+curl -H "Content-Type: application/timestamp-query" --data-binary '@signed.tsq' https://freetsa.org/tsr > signed.tsr
+```
+
+* With the public Certificates you can verify the TimeStampRequest. 
+```bash
+openssl ts -verify -in signed.tsr -queryfile signed.tsq -CAfile cacert.pem -untrusted tsa.crt
+```
+
+* URL Screenshooter from TSA
+```bash
+curl --data "screenshot=https://www.fsf.org/&delay=n" https://freetsa.org/screenshot.php > screenshot.pdf
+```
+
 
 ## Create Perfect Keypair in OpenPGP
 * Generate key RSA-RSA 4096 bits keysize
