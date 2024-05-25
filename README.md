@@ -225,6 +225,35 @@ ssh-keygen -y -f my_key.enc.key > my-ssh.pub
 ssh-keygen -lv -E md5 -f my_ssh.pub
 ```
 
+* Generate Certificate SSH
+```bash
+# Add config sshd
+# TrustedUserCAKeys /etc/ssh/keys/ca.pub
+# RevokedKeys /etc/ssh/keys/revoked.txt
+
+ssh-keygen -I "Identity name xxx" -s ca.key -n username -V +1d username.pub
+```
+
+* Print Certificate Information
+```bash
+ssh-keygen -L -f username-cert.pub
+```
+
+* Generate Revoked Key File
+```bash
+ssh-keygen -k -f revoked.txt
+```
+
+* Revoked SSH Keys
+```bash
+ssh-keygen -k -f revoked.txt -u username.pub
+```
+
+* Print Revoked SSH Keys
+```bash
+ssh-keygen -Q -l -f revoked.txt
+```
+
 
 ## My Certificate X509
 
